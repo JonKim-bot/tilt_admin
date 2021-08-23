@@ -41,11 +41,14 @@ const Login = (props) => {
                 return;
 
             }
+            // alert(JSON.stringify(res));
+            localStorage.setItem('clan',res.Clan)
+
             localStorage.setItem('level',res.Level)
             localStorage.setItem('login_data', res)
             localStorage.setItem('country',res.Country)
             localStorage.setItem('token-tilt', res.SessionTicket)
-            window.location.replace('http://' + window.location.host + '/tilt/games')
+            window.location.replace('http://' + window.location.host + '/tilt_admin/games_leaderboard?gameId=testGame')
         }
     }
     return (
@@ -100,8 +103,8 @@ const Login = (props) => {
 
                                                 <hr />
                                                 <div class="text-center"><small class="mr-25">Don't have an account?</small><a  onClick={(e) => {
-                    window.location.replace('http://' + window.location.host + '/tilt/register')
-                  }}><small>Sign up</small></a></div>
+                                                window.location.replace('http://' + window.location.host + '/tilt_admin/register')
+                                            }}><small>Sign up</small></a></div>
                                             </div>
                                         </div>
                                     </div>

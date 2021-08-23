@@ -12,15 +12,22 @@ const Games = (props) => {
 
     const [games, setGames] = React.useState([]);
     const [resource, setResource] = useState([])
-    const tableHead = ["AdminAccounts",'Game Element','Logs','Global var','Players',"Created","GameData","GameDescription","GameId","GameImages","GameLogo","GameName",'Last Login'];
+    const tableHead = ["AdminAccounts",'Leader Board','Game Element','Logs','Global var','Players',"Created","GameData","GameDescription","GameId","GameImages","GameLogo","GameName",'Last Login'];
 
     React.useEffect(() => {
+
         activeGames().then(res => {
             console.log(res);
             setGames(res.ActiveGames);
         });
     }, []);
     const handleClose = ()=>{
+
+
+
+
+
+
         setDbConfig(false)
 
         setAddGame(false);
@@ -39,10 +46,15 @@ const Games = (props) => {
         setDbConfig(true)
     }
 
-    function GameDashBoard(GameId){
-        window.location.href = "/games_dashboard/?gameId=" + GameId;
-    }
-    
+
+
+    function check_db_then_go(url,status){
+        if(status){
+            window.location.href = url;
+        }else{
+            alert("Please create the database first")
+        }
+    }  
     return (
         
 
@@ -80,27 +92,45 @@ const Games = (props) => {
                                     {games.map((row) => (
                                         <tr>
                                             <td>{row.AdminAccounts}</td>
-                                          
                                             <td>
-                                                <button class="btn btn-primary" onClick={() => GameDashBoard(row.GameId)}>Game Dashboard</button>
+                                                <button class="btn btn-primary" onClick={() => 
+                                                    check_db_then_go("/games_leaderboard/?gameId=" + row.GameId,row.ActiveDatabase)
+
+                                                }>Game Leaderboard</button>
 
                                             </td>
                                             <td>
-                                                <button class="btn btn-primary" onClick={() => window.location.href = "/games_element/?gameId=" + row.GameId}>Game Element</button>
+                                                <button class="btn btn-primary" onClick={() => check_db_then_go("/games_dashboard/?gameId=" + row.GameId,row.ActiveDatabase)}>Game Dashboard</button>
 
                                             </td>
                                             <td>
-                                                <button class="btn btn-primary" onClick={() => window.location.href = "/game_log/?gameId=" + row.GameId}>Game Logs</button>
+                                                <button class="btn btn-primary" onClick={() => 
+                                                check_db_then_go("/games_element/?gameId=" + row.GameId,row.ActiveDatabase)
+
+                                                    }>Game Element</button>
+
+                                            </td>
+                                      
+                                            <td>
+                                                <button class="btn btn-primary" onClick={() => 
+                                                check_db_then_go("/game_log/?gameId=" + row.GameId,row.ActiveDatabase)
+
+                                  }>Game Logs</button>
                                                 <hr></hr>
-                                                <button class="btn btn-primary" onClick={() => window.location.href = "/server_log/?gameId=" + row.GameId}>Server Logs</button>
+                                                <button class="btn btn-primary" onClick={() => 
+                                                check_db_then_go("/server_log/?gameId=" + row.GameId,row.ActiveDatabase)
+
+                                            }>Server Logs</button>
 
                                             </td>
                                             <td>
-                                                <button class="btn btn-primary" onClick={() => window.location.href = "/games_variable/?gameId=" + row.GameId}>Game Variable</button>
+                                                <button class="btn btn-primary" onClick={() => 
+                                            check_db_then_go("/games_variable/?gameId=" + row.GameId,row.ActiveDatabase)
+                                            }>Game Variable</button>
 
                                             </td>
                                             <td>
-                                                <button class="btn btn-primary" onClick={() => window.location.href = "/games_players/?gameId=" + row.GameId}>Game Players</button>
+                                                <button class="btn btn-primary" onClick={() => check_db_then_go("/games_players/?gameId=" + row.GameId,row.ActiveDatabase)}>Game Players</button>
 
                                             </td>
                                             <td>{row.Created}</td>

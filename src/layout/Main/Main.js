@@ -39,7 +39,7 @@ const Main = (props) => {
                             <div class="brand-logo">
 
                             </div>
-                            <h2 class="brand-text mb-0">Frest</h2>
+                            <h2 class="brand-text mb-0">KK admin panel</h2>
                         </a></li>
                       
                     </ul>
@@ -51,7 +51,7 @@ const Main = (props) => {
                      
                      
                         <li class=" nav-item">
-                            <Link to="/games" ><span class="menu-title text-truncate"
+                            <Link to="/games_leaderboard?gameId=testGame" ><span class="menu-title text-truncate"
                                     data-i18n="Email">Games</span>
                             </Link>
                         </li>

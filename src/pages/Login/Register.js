@@ -91,7 +91,7 @@ const Register = (props) => {
                                 </form>
                                 <hr />
                                 <div className="text-center"><small className="mr-25">Already have an account?</small><a  onClick={(e) => {
-                    window.location.replace('http://' + window.location.host + '/tilt/login')
+                    window.location.replace('http://' + window.location.host + '/tilt_admin/login')
                   }}><small>Sign in</small> </a></div>
                                 </div>
                             </div>

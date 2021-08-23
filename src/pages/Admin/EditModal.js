@@ -22,7 +22,7 @@ export default function AddModal(props) {
         if (res) {
             alert("Verify success");
             // alert(JSON.stringify(res))
-            window.location.replace('http://' + window.location.host + '/tilt/login')
+            window.location.replace('http://' + window.location.host + '/tilt_admin/login')
         }
     }
 

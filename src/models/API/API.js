@@ -12,6 +12,7 @@ const postHeaders = {
 
 // localStorage.setItem('token-tilt','AEaez9UDNAUjTEFWj9nSm2HykmyaGQs3')
 const token = localStorage.getItem('token-tilt') == null ? "" : localStorage.getItem('token-tilt');
+const clan = localStorage.getItem('clan') == null ? "" : localStorage.getItem('clan');
 
 axios.defaults.headers.common = {'Authorization': `Bearer ${token}`}
 
@@ -19,6 +20,7 @@ axios.defaults.headers.common = {'Authorization': `Bearer ${token}`}
 /* API Function */
 
 const get_axios_eg = async (url,data={})=>{
+    data.Clan = clan;
     return axios.get(ROOT_URL_API + url, {
         params: data,
         header : {
@@ -53,6 +55,8 @@ const get_axios_eg = async (url,data={})=>{
 }
 const get_axios_api = async (url , data={}) =>{
     data._method = "GET";
+    data.Clan = clan;
+
     return axios({
         method: 'post',
         url: ROOT_URL_API + url ,
@@ -123,6 +127,8 @@ const get_axios_api_without_overide = async (url , data={}) =>{
 
 
 const get_axios = async (url,data={})=>{
+    data.Clan = clan;
+
     return axios.get(ROOT_URL_API + url ,data, {
         header: postHeaders
     })
@@ -155,6 +161,7 @@ const get_axios = async (url,data={})=>{
 }
 
 const post_axios = async (url , data={})=>{
+    // data.Clan = clan;
     return axios.post(ROOT_URL_API + url ,data, {
         header: postHeaders
     })
@@ -214,6 +221,7 @@ export const CreateElement = async (gameId,data) => { return post_axios('/Client
 export const DeleteElement = async (gameId,data) => { return post_axios('/Client/GameElements/'+gameId+'/Delete',data); }
 export const EditElement = async (gameId,data) => { return post_axios('/Client/GameElements/'+gameId+'/Edit',data); }
 
+export const Leaderboard = async (gameId,data) => { return post_axios('/Client/Players/'+gameId+'/Leaderboard',data); }
 
 export const GetServerLogs = async (gameId,data) => { return post_axios('/Client/Logs/'+gameId+'/GetServerLogs',data); }
 export const GetGameLogs = async (gameId,data) => { return post_axios('/Client/Logs/'+gameId+'/GetGameLogs',data); }

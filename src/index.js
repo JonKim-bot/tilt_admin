@@ -10,6 +10,7 @@ import Main from "./layout/Main/Main";
 import Games  from "./pages/Games/Games";
 import GamesDashboard  from "./pages/Games/GamesDashboard";
 import GameElement  from "./pages/Games/GameElement";
+import GameLeaderboard  from "./pages/Games/GameLeaderboard";
 
 import Login from "./pages/Login/Login";
 import Register from "./pages/Login/Register";
@@ -22,7 +23,7 @@ import GameVariable  from "./pages/Games/GameVariable";
 import GamePlayers  from "./pages/Games/GamePlayers";
 
 const hist = createBrowserHistory({
-  basename: "tilt"
+  basename: "tilt_admin"
 });
 
 const LoginTest = ()=>{
@@ -49,6 +50,12 @@ const LoginTest = ()=>{
             <Route exact path="/games_dashboard" render={(props) => (
                 <Main {...props} >
                     <GamesDashboard {...props}></GamesDashboard>
+                </Main>
+            )} />
+
+            <Route exact path="/games_leaderboard" render={(props) => (
+                <Main {...props} >
+                    <GameLeaderboard {...props}></GameLeaderboard>
                 </Main>
             )} />
             <Route exact path="/games_element" render={(props) => (
@@ -102,7 +109,7 @@ const LoginTest = ()=>{
 }
 
 ReactDOM.render(
-  <Router basename={'/tilt'} history={hist}>
+  <Router basename={'/tilt_admin'} history={hist}>
     <LoginTest/>
   </Router>,
   document.getElementById("root")
