@@ -233,6 +233,7 @@ export const GameVariablesSet = async (gameId,data) => { return post_axios('/Cli
 export const GameVariablesDelete = async (gameId,data) => { return post_axios('/Client/GameVariables/'+gameId+'/Delete',data); }
 
 export const GameVariablesEdit = async (gameId,data) => { return post_axios('/Client/GameVariables/'+gameId+'/Edit',data); }
+export const GameSearch = async (gameId,data) => { return post_axios('/Client/Players/'+gameId+'/Search',data); }
 
 
 export const GetPlayerDetails = async (gameId,data) => { return get_axios_api('/Client/Players/'+gameId+'/GetPlayerDetails',data); }

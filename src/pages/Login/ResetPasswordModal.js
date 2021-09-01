@@ -3,6 +3,7 @@ import React , { useState ,useEffect} from 'react'
 // core components
 import { ResetPassword } from '../../models/API/API';
 
+import { ResendOTP } from '../../models/API/API';
 
 export default function ResetPasswordModal(props) {
 
@@ -27,6 +28,16 @@ export default function ResetPasswordModal(props) {
     }
   }
 
+  const ResendOTPFunc = async () =>{
+    let postParam = {
+      Email : form.Email
+    }
+    // alert(JSON.stringify(postParam))
+    var res = await ResendOTP  (postParam);
+    if (res) {
+        alert("OTP Resended");
+    }
+}
     return (
      
                   <div className={`modal bg-dark text-left ${props.open ? "display-block" : "display-none"}`}
@@ -41,7 +52,7 @@ export default function ResetPasswordModal(props) {
                           <div className="modal-body">
                             <label>Email: </label>
                             <div className="form-group">
-                              <input type="text" onChange={handleChange} placeholder="Email Address" name="Email" onChange={handleChange} className="form-control" />
+                              <input type="text" placeholder="Email Address" name="Email" onChange={handleChange} className="form-control" />
                             </div>
 
                             <label>New Password: </label>
@@ -54,6 +65,10 @@ export default function ResetPasswordModal(props) {
                             </div>
                           </div>
                           <div className="modal-footer">
+                          <button type="button" onClick={()=> ResendOTPFunc()} className="btn btn-success ml-1">
+                        <i className="bx bx-check d-block d-sm-none" />
+                        <span className="d-none d-sm-block">Resend Otp</span>
+                      </button>
                             <button type="button" className="btn btn-light-secondary" data-dismiss="modal">
                               <i className="bx bx-x d-block d-sm-none" />
                               <span className="d-none d-sm-block" onClick={props.handleClose}>Close</span>

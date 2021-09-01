@@ -7,7 +7,8 @@ const Main = (props) => {
         window.location.reload();
       }
     return (
-        <>
+        <div>
+
             <div class="header-navbar-shadow"></div>
             <nav class="header-navbar main-header-navbar navbar-expand-lg navbar navbar-with-menu fixed-top ">
                 <div class="navbar-wrapper">
@@ -84,7 +85,7 @@ const Main = (props) => {
                         class="bx bx-up-arrow-alt"></i></button>
                 </p>
             </footer>
-        </>
+        </div>
     );
 };
 
