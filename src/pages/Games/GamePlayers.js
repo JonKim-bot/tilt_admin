@@ -1,9 +1,10 @@
 import React, { useState , useEffect } from "react";
-import { loginWithEmail,GetPlayerDetails, activeGames } from "../../models/API/API";
+import { GameSearch,GetPlayerDetails, activeGames } from "../../models/API/API";
 import AddModal from './AddElementModal';
 
 import EditElementModal from './EditElementModal';
 import { Link } from 'react-router-dom';
+import TablePagination from '@material-ui/core/TablePagination';
 
 
 const Games = (props) => {
@@ -11,14 +12,21 @@ const Games = (props) => {
     const gameId = query.get('gameId')
     const [games, setGames] = React.useState([]);
     const [resource, setResource] = useState([])
-    const tableHead = ["AdminAccounts","Created","GameData","GameDescription","GameId","GameImages","GameLogo","GameName",'Last Login',''];
-
+    const tableHead = ['Account ID ', 'Username','Email','contact'];
+    const[emptyRows,setEmptyRos] = useState(0)
+    const [limit,setLimit] = useState(10)
+    const [count,setTotalCount] = useState(0)
+    const [keyword,setkeyword] = useState(null)
+    const [page, setPage] = React.useState(0);
+    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const [offset,setOffset] = useState(0)
     React.useEffect(() => {
-        GetPlayerDetails(gameId,{AccountId  : null}).then(res => {
+        GameSearch(gameId,{Offset  : offset,Limit : limit,Keyword : keyword}).then(res => {
             // console.log(res);
-            // setGames(res.ActiveGames);
+            setGames(res.Data);
+            setTotalCount(res.Count);
         });
-    }, []);
+    },[page,limit,keyword])
     const handleClose = ()=>{
         
         setAddGame(false);
@@ -36,6 +44,26 @@ const Games = (props) => {
         setGameId(GameId)
         setAddGame(true)
     }
+
+    const handleChangePage = (event, newPage) => {
+
+        let offset = (newPage) * 10
+
+        setOffset(offset)
+        // alert(offset);
+        setPage(newPage);
+    };
+
+
+    const handleChangeRowsPerPage = (event) => {
+        setLimit(parseInt(event.target.value, 10))
+        setRowsPerPage(parseInt(event.target.value, 10));
+        setPage(0);
+    };
+
+    useEffect(()=>{
+        setEmptyRos(rowsPerPage - Math.min(rowsPerPage, games.length - page * rowsPerPage))
+    },[games])
     return (
         
 
@@ -51,7 +79,12 @@ const Games = (props) => {
                             alignItems: 'flex-end',
                             width: "100%"
                         }}>
-                            <button class="btn btn-primary" onClick={() => setAddGame(true)}>Add</button>
+                        <div>
+
+                             <input type="text" onChange={(e) => setkeyword(e.target.value)}></input>
+
+                        </div>
+                            {/* <button class="btn btn-primary" onClick={() => setAddGame(true)}>Add</button> */}
                         </div>
                         <div class="table-responsive">
                             <table id="users-list-datatable" class="table">
@@ -72,28 +105,11 @@ const Games = (props) => {
                                 <tbody>
                                     {games.map((row) => (
                                         <tr>
-                                            <td>{row.AdminAccounts}</td>
-                                            <td>{row.Created}</td>
-                                            <td>{row.GameData}</td>
-                                            <td>{row.GameDescription}</td>
-                                            <td>{row.GameId}</td>
-
-                                            <td>{row.GameImages}</td>
-                                            <td>{row.GameLogo}</td>
-                                            <td>{row.GameName}</td>
-                                            <td>{row.LastLogin}</td>
-                                            <td>
-                                            <button class="btn btn-primary">
-                                                  <Link to={"/games_dashboard/?gameId=" + row.GameId}>
-                                                    <p>Games</p>
-                                                </Link>
-
-
-                                            </button>
-                                            <button class="btn btn-primary" onClick={() => AddGame(props.GameId)}>Add</button>
-
-
-                                            </td>
+                                            <td>{row.AccountId}</td>
+                                            <td>{row.Username}</td>
+                                            <td>{row.Email}</td>
+                                            <td>{row.PhoneNumber}</td>
+                                 
 
                                         </tr>
                                     ))}
@@ -101,6 +117,16 @@ const Games = (props) => {
                                 </tbody>
                             </table>
                         </div>
+                        <TablePagination
+                                // rowsPerPageOptions={[5, 10, 20]}
+                                component="div"
+                                count={count}
+                                rowsPerPage={rowsPerPage}
+                                page={page}
+                                onChangePage={handleChangePage}
+                                onChangeRowsPerPage={handleChangeRowsPerPage}
+                                style={{ marginTop: '15px' }}
+                            />
                     </div>
                 </div>
             </div>

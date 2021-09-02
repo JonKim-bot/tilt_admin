@@ -57,6 +57,12 @@ const Main = (props) => {
                             </Link>
                         </li>
 
+                        <li class=" nav-item">
+                            <Link to="/games_players?gameId=testGame" ><span class="menu-title text-truncate"
+                                    data-i18n="Email">Players</span>
+                            </Link>
+                        </li>
+
                    
                       
                     </ul>
