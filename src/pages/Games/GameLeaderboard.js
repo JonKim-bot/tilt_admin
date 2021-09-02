@@ -64,6 +64,7 @@ const GameLeaderboard = (props) => {
     },[game])
 
     const [count,setTotalCount] = useState(0)
+    const [keyword,setkeyword] = useState('')
 
     React.useEffect(() => {
         // OrderBy:orderBy,Offset:offset,Limit: limit
@@ -84,7 +85,8 @@ const GameLeaderboard = (props) => {
             setTotalCount(res.TotalCount);
             
         });
-    },[orderBy,page,limit])
+    },[orderBy,page,limit,keyword])
+
 
     React.useEffect(() => {
         // OrderBy:orderBy,Offset:offset,Limit: limit
@@ -105,6 +107,27 @@ const GameLeaderboard = (props) => {
             
         });
     },[orderBy,page,limit])
+
+
+
+    function search(){
+        let postParam = {
+            SortOn: ["score"],
+            Top: limit,
+            Order: orderBy,
+            Offset: offset, 
+            Around: 0,
+            Target: keyword, 
+            // (from before)
+            ShowItems: ["DisplayName",'Email']             // (Hardcoded)
+        
+        }
+        Leaderboard(gameId,postParam).then(res => {
+            // console.log(res);
+            setGames([res.TargetData]);
+            
+        });
+    }
     return (
         
 
@@ -121,11 +144,23 @@ const GameLeaderboard = (props) => {
                             width: "100%"
                         }}>
                         </div>
-                         <button style={{ marginRight: 10 }}>
-                                <CSVLink data={game} headers={tableHead} filename={"leaderboard.csv"} style={{ color: 'black' }}>
-                                    Export To Csv
-                                </CSVLink>
-                            </button> 
+                        <div style={{justifyContent : 'space-between',display : 'flex'}}>
+                            <div>
+
+                                <input type="text" onChange={(e) => setkeyword(e.target.value)}></input>
+                                <button onClick={() => search()} style={{ marginRight: 10 }}>
+                                    Search
+                                </button> 
+                            </div>
+                            <div>
+
+                                <button style={{ marginRight: 10 }}>
+                                    <CSVLink data={game} headers={tableHead} filename={"leaderboard.csv"} style={{ color: 'black' }}>
+                                        Export To Csv
+                                    </CSVLink>
+                                </button> 
+                            </div>
+                        </div>
                         <div class="table-responsive">
                             <table id="users-list-datatable" class="table">
                                 <thead>
