@@ -11,6 +11,7 @@ const Login = (props) => {
         Email: "",
         Password: ""
     });
+
     const handleChange = (e) => {
         setForm({
             ...form,
@@ -51,6 +52,14 @@ const Login = (props) => {
             window.location.replace('http://' + window.location.host + '/tilt_admin/games_leaderboard?gameId=testGame')
         }
     }
+    React.useEffect(()=>{
+        let token = localStorage.getItem('token-tilt')
+        if(token != null){
+            window.location.replace('http://' + window.location.host + '/tilt_admin/games_leaderboard?gameId=testGame')
+        }
+
+    },[])
+
     return (
         <div class="app-content content" style={{
             marginLeft: 0

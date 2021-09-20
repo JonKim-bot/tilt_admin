@@ -89,6 +89,9 @@ const LoginTest = ()=>{
                     <Admin {...props}></Admin>
                 </Main>
             )} />
+                   <Route exact path="/login" render={(props)=>(
+                <Login {...props}></Login>
+            )} />
       </Switch>
     ) 
   }else{

@@ -1,11 +1,15 @@
 import React, { useState , useEffect } from "react";
-import { Leaderboard,GameSearch, activeGames } from "../../models/API/API";
+import { Leaderboard,GameSearch, activeGames,GameElementGetAll } from "../../models/API/API";
 import AddModal from './AddGameVariableModal';
 
 import EditGameVariableModal from './EditGameVariableModal';
 import { Link } from 'react-router-dom';
 import TablePagination from '@material-ui/core/TablePagination';
 import { CSVLink, CSVDownload } from "react-csv";
+import Autocomplete from '@material-ui/lab/Autocomplete'
+import { Box , Card , TextField , Button , Typography } from '@material-ui/core'
+const width = '400px'
+
 
 const GameLeaderboard = (props) => {
     const query = new URLSearchParams(props.location.search);
@@ -52,7 +56,7 @@ const GameLeaderboard = (props) => {
         setPage(newPage);
     };
 
-
+    
     const handleChangeRowsPerPage = (event) => {
         setLimit(parseInt(event.target.value, 10))
         setRowsPerPage(parseInt(event.target.value, 10));
@@ -65,11 +69,13 @@ const GameLeaderboard = (props) => {
 
     const [count,setTotalCount] = useState(0)
     const [keyword,setkeyword] = useState('')
+    const [gameselement, setGameselement] = React.useState([]);
+    const [itemcode, setItemcode] = useState('score')
 
     React.useEffect(() => {
         // OrderBy:orderBy,Offset:offset,Limit: limit
         let postParam = {
-            SortOn: ["score"],
+            SortOn: [itemcode],
             Top: limit,
             Order: orderBy,
             Offset: offset, 
@@ -85,13 +91,18 @@ const GameLeaderboard = (props) => {
             setTotalCount(res.TotalCount);
             
         });
+
+        GameElementGetAll(gameId).then(res => {
+            //     console.log(res);
+            setGameselement(res.Data);
+        });
     },[orderBy,page,limit,keyword])
 
 
     React.useEffect(() => {
         // OrderBy:orderBy,Offset:offset,Limit: limit
         let postParam = {
-            SortOn: ["score"],
+            SortOn: ['' + itemcode+ ''],
             Top: 10000,
             Order: orderBy,
             Offset: 0, 
@@ -106,13 +117,13 @@ const GameLeaderboard = (props) => {
             setGame(res.Top);
             
         });
-    },[orderBy,page,limit])
+    },[orderBy,page,limit,itemcode])
 
 
 
     function search(){
         let postParam = {
-            SortOn: ["score"],
+            SortOn: ['' + itemcode+ ''],
             Top: limit,
             Order: orderBy,
             Offset: offset, 
@@ -128,6 +139,7 @@ const GameLeaderboard = (props) => {
             
         });
     }
+
     return (
         
 
@@ -144,22 +156,47 @@ const GameLeaderboard = (props) => {
                             width: "100%"
                         }}>
                         </div>
+                     
                         <div style={{justifyContent : 'space-between',display : 'flex'}}>
                             <div>
 
-                                <input type="text" onChange={(e) => setkeyword(e.target.value)}></input>
-                                <button onClick={() => search()} style={{ marginRight: 10 }}>
+                                <input type="text" className="h-100" onChange={(e) => setkeyword(e.target.value)}></input>
+                                <button onClick={() => search()} className="btn btn-sm btn-primary glow h-100" style={{ marginRight: 10 }}>
                                     Search
                                 </button> 
                             </div>
                             <div>
 
-                                <button style={{ marginRight: 10 }}>
+                                <button className="btn btn-sm btn-success glow h-100">
                                     <CSVLink data={game} headers={tableHead} filename={"leaderboard.csv"} style={{ color: 'black' }}>
                                         Export To Csv
                                     </CSVLink>
                                 </button> 
                             </div>
+                            <div>
+                                <Autocomplete
+                                id="tags-outlined"
+                                options={gameselement}
+                                onChange={(e,value)=>{value ? setItemcode(value.ItemCode) 
+                                    : setItemcode( value.ItemCode)}
+                            }
+                        
+                            // onChange={(option) => alert(option.name)}
+                                defaultValue={'Score'}
+                                getOptionLabel={(option) => option.ItemCode}
+                                filterSelectedOptions
+                                renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        label="Sort on"
+                                        variant='outlined'
+                                        placeholder="-- select item to sort on --"
+                                    />
+                                )}
+                                style={{ width: width }}
+                            />
+                            </div>
+
                         </div>
                         <div class="table-responsive">
                             <table id="users-list-datatable" class="table">
